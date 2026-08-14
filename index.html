@@ -1,652 +1,91 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport"
-      content="width=device-width,initial-scale=1,maximum-scale=1">
-
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>NET SCOPE</title>
-
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
-
 <style>
-:root{
-  --bg:#070b14;
-  --card:#101827;
-  --card2:#0d1422;
-  --text:#f8fafc;
-  --muted:#8b98aa;
-  --line:rgba(255,255,255,.08);
-  --blue:#3b82f6;
-  --green:#22c55e;
-  --red:#ef4444;
-  --yellow:#f59e0b;
-}
-
-*{
-  box-sizing:border-box;
-  -webkit-tap-highlight-color:transparent;
-}
-
-body{
-  margin:0;
-  background:
-    radial-gradient(circle at 50% -10%,
-      rgba(59,130,246,.28),
-      transparent 38%),
-    var(--bg);
-  color:var(--text);
-  font-family:
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    sans-serif;
-}
-
-.app{
-  max-width:650px;
-  margin:auto;
-  padding:16px;
-  padding-bottom:35px;
-}
-
-.header{
-  padding:22px 18px;
-  border:1px solid var(--line);
-  border-radius:24px;
-  background:
-    linear-gradient(
-      135deg,
-      rgba(59,130,246,.16),
-      rgba(124,58,237,.08)
-    );
-  box-shadow:0 15px 45px rgba(0,0,0,.25);
-}
-
-.brand{
-  display:flex;
-  align-items:center;
-  gap:13px;
-}
-
-.logo{
-  width:50px;
-  height:50px;
-  display:grid;
-  place-items:center;
-  border-radius:16px;
-  font-size:25px;
-  background:
-    linear-gradient(135deg,#2563eb,#7c3aed);
-}
-
-.title{
-  font-size:25px;
-  font-weight:850;
-  letter-spacing:-.5px;
-}
-
-.subtitle{
-  color:var(--muted);
-  font-size:13px;
-  margin-top:3px;
-}
-
-.status{
-  margin-top:18px;
-  display:flex;
-  align-items:center;
-  gap:8px;
-  font-size:13px;
-  color:#b7c3d4;
-}
-
-.dot{
-  width:9px;
-  height:9px;
-  border-radius:50%;
-  background:var(--green);
-  box-shadow:0 0 14px rgba(34,197,94,.8);
-}
-
-.section-title{
-  margin:22px 3px 10px;
-  font-size:13px;
-  color:var(--muted);
-  font-weight:700;
-  text-transform:uppercase;
-  letter-spacing:1px;
-}
-
-.grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:10px;
-}
-
-.card{
-  min-height:105px;
-  padding:16px;
-  border-radius:19px;
-  border:1px solid var(--line);
-  background:
-    linear-gradient(
-      145deg,
-      rgba(255,255,255,.055),
-      rgba(255,255,255,.018)
-    );
-}
-
-.icon{
-  font-size:21px;
-}
-
-.label{
-  margin-top:10px;
-  font-size:11px;
-  color:var(--muted);
-  text-transform:uppercase;
-  letter-spacing:.6px;
-}
-
-.value{
-  margin-top:5px;
-  font-size:17px;
-  font-weight:750;
-  word-break:break-word;
-}
-
-.online{
-  color:var(--green);
-}
-
-.warning{
-  color:var(--yellow);
-}
-
-.offline{
-  color:var(--red);
-}
-
-.actions{
-  margin-top:12px;
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-}
-
-button{
-  border:0;
-  color:white;
-  font:inherit;
-  font-weight:750;
-  cursor:pointer;
-}
-
-.primary{
-  width:100%;
-  padding:16px;
-  border-radius:18px;
-  background:
-    linear-gradient(135deg,#2563eb,#7c3aed);
-  box-shadow:
-    0 12px 30px rgba(37,99,235,.22);
-}
-
-.secondary{
-  padding:14px;
-  border-radius:16px;
-  background:var(--card);
-  border:1px solid var(--line);
-}
-
-.devices{
-  margin-top:10px;
-  display:flex;
-  flex-direction:column;
-  gap:9px;
-}
-
-.device{
-  padding:14px;
-  border-radius:16px;
-  background:var(--card2);
-  border:1px solid var(--line);
-}
-
-.device-top{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-}
-
-.device-name{
-  font-weight:750;
-}
-
-.device-ip{
-  margin-top:4px;
-  color:var(--muted);
-  font-size:12px;
-}
-
-.pill{
-  padding:5px 9px;
-  border-radius:999px;
-  font-size:11px;
-  background:rgba(34,197,94,.12);
-  color:#6ee7a0;
-}
-
-.info{
-  margin-top:14px;
-  padding:15px;
-  border-radius:17px;
-  border:1px solid var(--line);
-  background:rgba(255,255,255,.025);
-  color:var(--muted);
-  font-size:12px;
-  line-height:1.6;
-}
-
-.loader{
-  display:inline-block;
-  width:15px;
-  height:15px;
-  border:2px solid rgba(255,255,255,.2);
-  border-top-color:white;
-  border-radius:50%;
-  animation:spin .7s linear infinite;
-  vertical-align:-3px;
-}
-
-@keyframes spin{
-  to{transform:rotate(360deg)}
-}
-
-.footer{
-  margin-top:20px;
-  text-align:center;
-  color:#596679;
-  font-size:11px;
-}
-
-@media(max-width:380px){
-  .grid{
-    grid-template-columns:1fr;
-  }
-}
+:root{--bg:#050812;--card:#0d1525;--line:#ffffff14;--text:#f8fafc;--mut:#94a3b8;--blue:#4f8cff;--green:#31d17c}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 50% -10%,#315ee644,transparent 45%),var(--bg);color:var(--text);font:15px system-ui,-apple-system,sans-serif}
+main{max-width:700px;margin:auto;padding:15px 15px 35px}.hero{padding:22px;border:1px solid var(--line);border-radius:26px;background:linear-gradient(135deg,#4f8cff18,#7c3aed12);box-shadow:0 18px 55px #0006}.hero h1{margin:0;font-size:29px}.sub{color:var(--mut);margin-top:5px}.live{margin-top:14px;color:#8ff0ba}.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 14px #31d17c;animation:p 1.3s infinite}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.card,.panel{background:#ffffff07;border:1px solid var(--line);border-radius:20px;padding:16px}.card{cursor:pointer}.icon{font-size:24px}.title{font-weight:800;margin-top:7px}.mut{color:var(--mut);font-size:12px}.panel{display:none;margin-top:12px}.panel.show{display:block;animation:up .25s ease}
+button{width:100%;border:0;border-radius:14px;padding:14px;margin:6px 0;background:linear-gradient(135deg,#3b82f6,#7c3aed);color:#fff;font-weight:800;cursor:pointer}.ghost{background:#ffffff08;border:1px solid var(--line)}
+input{width:100%;padding:13px;margin:5px 0;border-radius:12px;border:1px solid var(--line);background:#07101d;color:#fff;outline:none}pre{white-space:pre-wrap;word-break:break-word;font-size:12px;color:#cbd5e1}
+.badge{display:inline-block;padding:5px 9px;border-radius:99px;background:#31d17c18;color:#8ff0ba;font-size:11px}
+@keyframes up{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}@keyframes p{50%{opacity:.35}}
+@media(max-width:420px){.grid{grid-template-columns:1fr}}
 </style>
 </head>
-
-<body>
-
-<div class="app">
-
-  <header class="header">
-
-    <div class="brand">
-
-      <div class="logo">
-        📡
-      </div>
-
-      <div>
-        <div class="title">
-          NET SCOPE
-        </div>
-
-        <div class="subtitle">
-          Personal Wi-Fi Monitor
-        </div>
-      </div>
-
-    </div>
-
-    <div class="status">
-      <span class="dot"></span>
-      Dashboard ready
-    </div>
-
-  </header>
-
-
-  <div class="section-title">
-    Network overview
-  </div>
-
-
-  <section class="grid">
-
-    <div class="card">
-
-      <div class="icon">
-        📡
-      </div>
-
-      <div class="label">
-        Router
-      </div>
-
-      <div
-        id="router"
-        class="value warning">
-        Detecting...
-      </div>
-
-    </div>
-
-
-    <div class="card">
-
-      <div class="icon">
-        🌐
-      </div>
-
-      <div class="label">
-        Internet
-      </div>
-
-      <div
-        id="internet"
-        class="value warning">
-        Checking...
-      </div>
-
-    </div>
-
-
-    <div class="card">
-
-      <div class="icon">
-        📱
-      </div>
-
-      <div class="label">
-        Local IP
-      </div>
-
-      <div
-        id="localIp"
-        class="value">
-        —
-      </div>
-
-    </div>
-
-
-    <div class="card">
-
-      <div class="icon">
-        ⚡
-      </div>
-
-      <div class="label">
-        Latency
-      </div>
-
-      <div
-        id="latency"
-        class="value">
-        —
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <div class="section-title">
-    Network actions
-  </div>
-
-
-  <button
-    class="primary"
-    onclick="refreshNetwork()">
-
-    🔄 Refresh Network
-
-  </button>
-
-
-  <div class="actions">
-
-    <button
-      class="secondary"
-      onclick="sendToTelegram()">
-
-      📤 Send Report
-
-    </button>
-
-    <button
-      class="secondary"
-      onclick="showInfo()">
-
-      ℹ️ About
-
-    </button>
-
-  </div>
-
-
-  <div class="section-title">
-    Devices
-  </div>
-
-
-  <div
-    id="devices"
-    class="devices">
-
-    <div class="device">
-
-      <div class="device-top">
-
-        <div class="device-name">
-          🔒 Network access required
-        </div>
-
-        <div class="pill">
-          Protected
-        </div>
-
-      </div>
-
-      <div class="device-ip">
-        Connect an authorized local agent or
-        router API to show network devices.
-      </div>
-
-    </div>
-
-  </div>
-
-
-  <div class="info">
-
-    <b>Privacy & access</b><br>
-
-    Your browser cannot directly read Android's
-    private Wi-Fi details or the complete router
-    client table. Full information requires an
-    authorized local agent or compatible router
-    API.
-
-    <br><br>
-
-    This dashboard does not inspect private
-    applications, messages, passwords or websites
-    used by other devices.
-
-  </div>
-
-
-  <div class="footer">
-    NET SCOPE • Wi-Fi Network Monitor
-  </div>
-
+<body><main>
+<div class="hero"><h1>📡 NET SCOPE</h1><div class="sub">Personal Wi-Fi Monitor</div><div class="live"><span class="dot"></span> Dashboard ready</div></div>
+
+<div class="grid">
+<div class="card" onclick="openPanel('wifi')"><div class="icon">📶</div><div class="title">WiFi Info</div><div class="mut">Auto • Manual • Screenshot</div></div>
+<div class="card" onclick="openPanel('ip')"><div class="icon">🌐</div><div class="title">IP Info</div><div class="mut">Public IP & network</div></div>
+<div class="card" onclick="openPanel('devices')"><div class="icon">📱</div><div class="title">Devices</div><div class="mut">Authorized network</div></div>
+<div class="card" onclick="openPanel('player')"><div class="icon">🎮</div><div class="title">FF Player</div><div class="mut">UID / Name</div></div>
 </div>
 
+<section id="wifi" class="panel">
+<h3>📶 WiFi Info</h3>
+<button onclick="auto()">⚡ Automatic Detect</button>
+<button class="ghost" onclick="manual()">🛠️ Enter Router Details</button>
+<button class="ghost" onclick="document.getElementById('shot').click()">📸 Screenshot Detect</button>
+<input id="shot" type="file" accept="image/*" hidden onchange="shotInfo(this)">
+<div id="wifiout" class="mut">Choose a detection method.</div>
+</section>
+
+<section id="ip" class="panel">
+<h3>🌐 IP Info</h3>
+<button onclick="getIP()">🔄 Get My Public IP</button>
+<div id="ipout" class="mut">—</div>
+</section>
+
+<section id="devices" class="panel">
+<h3>📱 Devices</h3>
+<div class="badge">Authorized network only</div>
+<p class="mut">A browser cannot directly read the router's DHCP/client table. After you provide router details, an authorized local agent/router API is required for the actual device list.</p>
+</section>
+
+<section id="player" class="panel">
+<h3>🎮 FF Player Info</h3>
+<input id="uid" placeholder="UID or player name">
+<button onclick="player()">🔎 Search</button>
+<div id="playerout" class="mut">Player API endpoint is configured on the backend.</div>
+</section>
 
 <script>
-
-const tg = window.Telegram?.WebApp;
-
-if (tg) {
-  tg.ready();
-  tg.expand();
+function openPanel(id){document.querySelectorAll('.panel').forEach(x=>x.classList.remove('show'));document.getElementById(id).classList.add('show')}
+function auto(){document.getElementById('wifiout').innerHTML='<b>⚡ Automatic Detect</b><p class="mut">Real Wi-Fi data needs an authorized Android/local agent or compatible router API. This web page cannot truthfully read the private Wi-Fi client table by itself.</p>'}
+function manual(){
+ document.getElementById('wifiout').innerHTML=`
+ <b>🛠️ Router Details</b>
+ <input id="ssid" placeholder="SSID / Wi-Fi name">
+ <input id="router" placeholder="Router / Gateway IP (e.g. 192.168.1.1)">
+ <input id="local" placeholder="Your Local IP (optional)">
+ <input id="network" placeholder="Network/CIDR (e.g. 192.168.1.0/24)">
+ <input id="dns" placeholder="DNS (optional)">
+ <button onclick="saveManual()">🔍 Detect / Build Report</button>
+ <div id="manualout"></div>`;
 }
-
-
-/* ---------------------------------------------
-   UI helpers
---------------------------------------------- */
-
-function setValue(
-  id,
-  value,
-  className=""
-){
-
-  const el =
-    document.getElementById(id);
-
-  if (!el) return;
-
-  el.textContent = value;
-
-  el.className =
-    "value " + className;
+function saveManual(){
+ const v=id=>document.getElementById(id)?.value.trim()||'—';
+ document.getElementById('manualout').innerHTML=`
+ <p><b>Network Details</b><br>SSID: ${esc(v('ssid'))}<br>Router: ${esc(v('router'))}<br>Local IP: ${esc(v('local'))}<br>Network: ${esc(v('network'))}<br>DNS: ${esc(v('dns'))}</p>
+ <p class="mut">These are the details you supplied. Actual router/client discovery requires authorized local access.</p>`;
 }
-
-
-/* ---------------------------------------------
-   Network refresh
---------------------------------------------- */
-
-async function refreshNetwork(){
-
-  setValue(
-    "router",
-    "Detecting...",
-    "warning"
-  );
-
-  setValue(
-    "internet",
-    "Checking...",
-    "warning"
-  );
-
-  setValue(
-    "latency",
-    "Measuring...",
-    "warning"
-  );
-
-  /*
-   IMPORTANT:
-
-   A normal Telegram Mini App/browser
-   cannot directly access Android's
-   private Wi-Fi SSID/gateway/CSI/client
-   table.
-
-   The backend/local-agent endpoint
-   should provide these values.
-
-   Example expected response:
-
-   {
-     "router": "192.168.1.1",
-     "router_status": "online",
-     "local_ip": "192.168.1.6",
-     "internet": true,
-     "latency": 4.2,
-     "devices": []
-   }
-  */
-
-  setTimeout(() => {
-
-    setValue(
-      "router",
-      "Agent required",
-      "warning"
-    );
-
-    setValue(
-      "internet",
-      "Waiting",
-      "warning"
-    );
-
-    setValue(
-      "localIp",
-      "Unavailable"
-    );
-
-    setValue(
-      "latency",
-      "Unavailable"
-    );
-
-  }, 500);
+async function getIP(){
+ const o=document.getElementById('ipout');o.textContent='Loading…';
+ try{
+  const d=await fetch('https://ipapi.co/json/').then(r=>r.json());
+  o.innerHTML=`<b>Public IP:</b> ${esc(d.ip)}<br><b>ISP/Org:</b> ${esc(d.org)}<br><b>City:</b> ${esc(d.city)}<br><b>Region:</b> ${esc(d.region)}<br><b>Country:</b> ${esc(d.country_name)}<br><b>Timezone:</b> ${esc(d.timezone)}<br><br><span class="mut">Public-IP geolocation is approximate, not an exact physical location.</span>`;
+ }catch(e){o.textContent='IP lookup unavailable.'}
 }
-
-
-/* ---------------------------------------------
-   Telegram report button
---------------------------------------------- */
-
-function sendToTelegram(){
-
-  if (!tg) {
-    alert(
-      "Open this page from Telegram."
-    );
-    return;
-  }
-
-  tg.showAlert(
-    "Network report requires an authorized local agent."
-  );
+function player(){document.getElementById('playerout').textContent='Use the configured backend Player API for UID/name lookup.'}
+function shotInfo(input){
+ if(!input.files[0])return;
+ document.getElementById('wifiout').innerHTML='<b>📸 Screenshot selected</b><p class="mut">Upload received. OCR can extract only text actually visible in the screenshot. The extracted values can then be entered into Router Details.</p>';
 }
-
-
-/* ---------------------------------------------
-   About
---------------------------------------------- */
-
-function showInfo(){
-
-  if (tg) {
-
-    tg.showAlert(
-      "NET SCOPE is a personal Wi-Fi monitoring dashboard."
-    );
-
-  } else {
-
-    alert(
-      "NET SCOPE is a personal Wi-Fi monitoring dashboard."
-    );
-
-  }
-}
-
-
-/* ---------------------------------------------
-   Start
---------------------------------------------- */
-
-refreshNetwork();
-
+function esc(x){return String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 </script>
-
-</body>
-</html>
+</main></body></html>
